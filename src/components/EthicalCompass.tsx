@@ -13,16 +13,13 @@ interface CompassAlert {
 
 interface EthicalCompassProps {
   alerts: CompassAlert[];
-  /** Role count per member */
   rolesPerMember: Record<string, number>;
-  /** Stock autonomy days */
   stockDays: number[];
-  /** Security threshold */
   securityThreshold: number;
-  /** On-time rotations */
   onTimeRotations: number;
-  /** Total expected rotations */
   totalRotations: number;
+  openTensions?: number;
+  tensionThreshold?: number;
 }
 
 export function EthicalCompass({
@@ -32,6 +29,8 @@ export function EthicalCompass({
   securityThreshold,
   onTimeRotations,
   totalRotations,
+  openTensions = 0,
+  tensionThreshold = 3,
 }: EthicalCompassProps) {
   const { score, factors } = useMemo(() =>
     calculateCaptureIndex({
@@ -40,8 +39,10 @@ export function EthicalCompass({
       securityThresholdDays: securityThreshold,
       onTimeRotations,
       totalRotations,
+      openTensions,
+      tensionThreshold,
     }),
-    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations]
+    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations, openTensions, tensionThreshold]
   );
 
   return (

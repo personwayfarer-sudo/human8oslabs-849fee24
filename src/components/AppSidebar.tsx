@@ -6,6 +6,7 @@ import {
   Sprout,
   RefreshCw,
   BookOpen,
+  HeartHandshake,
   Settings,
   Menu,
   X,
@@ -16,6 +17,7 @@ const navItems = [
   { title: "Résilience", url: "/", icon: Shield },
   { title: "Subsistance", url: "/subsistance", icon: Sprout },
   { title: "Rôles", url: "/roles", icon: RefreshCw },
+  { title: "Médiation", url: "/mediation", icon: HeartHandshake },
   { title: "Savoirs", url: "/savoirs", icon: BookOpen },
   { title: "Paramètres", url: "/parametres", icon: Settings },
 ];
