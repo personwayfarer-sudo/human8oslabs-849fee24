@@ -11,6 +11,7 @@ import {
   Menu,
   X,
   Infinity,
+  ClipboardCheck,
 } from "lucide-react";
 
 const navItems = [
@@ -19,6 +20,7 @@ const navItems = [
   { title: "Rôles", url: "/roles", icon: RefreshCw },
   { title: "Médiation", url: "/mediation", icon: HeartHandshake },
   { title: "Savoirs", url: "/savoirs", icon: BookOpen },
+  { title: "Audit", url: "/audit", icon: ClipboardCheck },
   { title: "Paramètres", url: "/parametres", icon: Settings },
 ];
 

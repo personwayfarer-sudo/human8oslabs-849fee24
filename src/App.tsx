@@ -9,6 +9,7 @@ import Roles from "./pages/Roles";
 import Mediation from "./pages/Mediation";
 import Savoirs from "./pages/Savoirs";
 import Parametres from "./pages/Parametres";
+import Audit from "./pages/Audit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/roles" element={<Roles />} />
           <Route path="/mediation" element={<Mediation />} />
           <Route path="/savoirs" element={<Savoirs />} />
+          <Route path="/audit" element={<Audit />} />
           <Route path="/parametres" element={<Parametres />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
