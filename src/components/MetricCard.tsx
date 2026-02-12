@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { JusticeCognitive } from "@/components/JusticeCognitive";
 
 interface MetricCardProps {
   label: string;
@@ -7,9 +8,11 @@ interface MetricCardProps {
   status?: "safe" | "warning" | "danger";
   icon?: ReactNode;
   detail?: string;
+  invariant?: string;
+  invariantExplanation?: string;
 }
 
-export function MetricCard({ label, value, unit, status = "safe", icon, detail }: MetricCardProps) {
+export function MetricCard({ label, value, unit, status = "safe", icon, detail, invariant, invariantExplanation }: MetricCardProps) {
   const statusStyles = {
     safe: "border-safe/30 pulse-safe",
     warning: "border-warning/30 pulse-warning",
@@ -25,7 +28,12 @@ export function MetricCard({ label, value, unit, status = "safe", icon, detail }
   return (
     <div className={`glass-card p-4 ${statusStyles[status]}`}>
       <div className="flex items-start justify-between">
-        <span className="data-label">{label}</span>
+        <div className="flex items-center gap-1.5">
+          <span className="data-label">{label}</span>
+          {invariant && invariantExplanation && (
+            <JusticeCognitive invariant={invariant} explanation={invariantExplanation} />
+          )}
+        </div>
         {icon && <span className="text-muted-foreground">{icon}</span>}
       </div>
       <div className="mt-3 flex items-baseline gap-2">
