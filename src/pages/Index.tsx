@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { TransparencyWall } from "@/components/TransparencyWall";
 import { EthicalCompass } from "@/components/EthicalCompass";
-import { Apple, Zap, Banknote, Droplets, HeartHandshake } from "lucide-react";
+import { Apple, Zap, Banknote, Droplets, HeartHandshake, ClipboardCheck } from "lucide-react";
 import { JusticeCognitive } from "@/components/JusticeCognitive";
 
 const mockEntries = [
@@ -105,6 +105,30 @@ const Index = () => {
         </div>
         <a href="/mediation" className="text-xs text-primary font-medium hover:underline">
           Voir les tensions →
+        </a>
+      </div>
+
+      {/* Audit countdown indicator */}
+      <div className="glass-card p-4 mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded flex items-center justify-center bg-warning/10">
+            <ClipboardCheck className="h-4 w-4 text-warning" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              Prochain audit croisé dans ~4 mois
+            </p>
+            <p className="text-[10px] text-muted-foreground">
+              Dernier audit validé il y a 14 mois · Protocole des 18 mois
+            </p>
+          </div>
+          <JusticeCognitive
+            invariant="Regard Extérieur"
+            explanation="Sans audit externe régulier, un Lab développe une cécité organisationnelle. Le protocole des 18 mois garantit qu'un regard neuf vérifie les invariants. Si le délai est dépassé, l'Indice de Capture augmente de +20 pts."
+          />
+        </div>
+        <a href="/audit" className="text-xs text-primary font-medium hover:underline">
+          Voir les audits →
         </a>
       </div>
 

@@ -27,6 +27,8 @@ interface CaptureInput {
   tensionThreshold: number;
   /** Cloud dependencies — centralized services the Lab relies on */
   cloudDependencies?: CloudDependency[];
+  /** Whether the 18-month audit deadline has been exceeded */
+  auditOverdue?: boolean;
 }
 
 export interface CaptureFactor {
@@ -100,6 +102,14 @@ export function calculateCaptureIndex(input: CaptureInput): CaptureResult {
     const rotationBonus = Math.round(rotationRate * 18);
     score -= rotationBonus;
     factors.push({ label: `${input.onTimeRotations}/${input.totalRotations} rotations à temps`, contribution: rotationBonus, status: "positive" });
+  }
+
+  // Factor 6: Audit overdue (0 or 20 points)
+  if (input.auditOverdue) {
+    score += 20;
+    factors.push({ label: "Audit croisé en retard (>18 mois)", contribution: 20, status: "negative" });
+  } else {
+    factors.push({ label: "Audit croisé à jour", contribution: 5, status: "positive" });
   }
 
   score = Math.max(0, Math.min(100, score));
