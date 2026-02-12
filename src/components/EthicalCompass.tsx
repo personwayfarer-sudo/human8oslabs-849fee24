@@ -20,6 +20,7 @@ interface EthicalCompassProps {
   totalRotations: number;
   openTensions?: number;
   tensionThreshold?: number;
+  cloudDependencies?: { service: string; critical: boolean; selfHostable: boolean }[];
 }
 
 export function EthicalCompass({
@@ -31,6 +32,7 @@ export function EthicalCompass({
   totalRotations,
   openTensions = 0,
   tensionThreshold = 3,
+  cloudDependencies = [],
 }: EthicalCompassProps) {
   const { score, factors } = useMemo(() =>
     calculateCaptureIndex({
@@ -41,8 +43,9 @@ export function EthicalCompass({
       totalRotations,
       openTensions,
       tensionThreshold,
+      cloudDependencies,
     }),
-    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations, openTensions, tensionThreshold]
+    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations, openTensions, tensionThreshold, cloudDependencies]
   );
 
   return (
