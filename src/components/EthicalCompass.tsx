@@ -1,4 +1,8 @@
 import { AlertTriangle, Shield } from "lucide-react";
+import { CaptureGauge } from "@/components/CaptureGauge";
+import { JusticeCognitive } from "@/components/JusticeCognitive";
+import { calculateCaptureIndex } from "@/lib/capture-index";
+import { useMemo } from "react";
 
 interface CompassAlert {
   id: string;
@@ -9,54 +13,55 @@ interface CompassAlert {
 
 interface EthicalCompassProps {
   alerts: CompassAlert[];
-  captureIndex: number;
+  /** Role count per member */
+  rolesPerMember: Record<string, number>;
+  /** Stock autonomy days */
+  stockDays: number[];
+  /** Security threshold */
+  securityThreshold: number;
+  /** On-time rotations */
+  onTimeRotations: number;
+  /** Total expected rotations */
+  totalRotations: number;
 }
 
-export function EthicalCompass({ alerts, captureIndex }: EthicalCompassProps) {
-  const getCaptureColor = (index: number) => {
-    if (index <= 20) return "text-safe";
-    if (index <= 50) return "text-warning";
-    return "text-destructive";
-  };
-
-  const getCaptureLabel = (index: number) => {
-    if (index <= 20) return "Faible — Système ouvert";
-    if (index <= 50) return "Modéré — Vigilance requise";
-    return "Élevé — Risque de capture";
-  };
+export function EthicalCompass({
+  alerts,
+  rolesPerMember,
+  stockDays,
+  securityThreshold,
+  onTimeRotations,
+  totalRotations,
+}: EthicalCompassProps) {
+  const { score, factors } = useMemo(() =>
+    calculateCaptureIndex({
+      rolesPerMember,
+      stockAutonomyDays: stockDays,
+      securityThresholdDays: securityThreshold,
+      onTimeRotations,
+      totalRotations,
+    }),
+    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations]
+  );
 
   return (
     <div className="glass-card p-4">
       <div className="flex items-center gap-2 mb-4">
         <Shield className="h-4 w-4 text-primary" />
-        <h3 className="text-sm font-semibold text-foreground">Boussole Éthique</h3>
+        <h3 className="text-sm font-semibold text-foreground">Boussole de Capture</h3>
+        <JusticeCognitive
+          invariant="Non-Extraction du Pouvoir"
+          explanation="La Boussole de Capture agrège trois facteurs structurels : la concentration des rôles (une personne cumule-t-elle trop de responsabilités ?), le niveau des stocks vitaux (le Lab est-il en situation de dépendance ?), et la régularité des rotations (le pouvoir circule-t-il ?). Elle ne mesure pas la performance individuelle — elle mesure la santé architecturale du système."
+        />
       </div>
 
-      {/* Capture Index */}
-      <div className="mb-4 p-3 rounded-md bg-muted/50">
-        <span className="data-label">Indice de Capture</span>
-        <div className="mt-2 flex items-baseline gap-2">
-          <span className={`text-3xl font-mono font-semibold ${getCaptureColor(captureIndex)}`}>
-            {captureIndex}
-          </span>
-          <span className="text-sm text-muted-foreground">/ 100</span>
-        </div>
-        <div className="mt-2 w-full bg-muted rounded-full h-1.5">
-          <div
-            className={`h-full rounded-full transition-all duration-700 ${
-              captureIndex <= 20 ? "bg-safe" : captureIndex <= 50 ? "bg-warning" : "bg-destructive"
-            }`}
-            style={{ width: `${captureIndex}%` }}
-          />
-        </div>
-        <p className={`text-xs mt-1.5 ${getCaptureColor(captureIndex)}`}>
-          {getCaptureLabel(captureIndex)}
-        </p>
-      </div>
+      {/* Radial Gauge */}
+      <CaptureGauge score={score} factors={factors} />
 
       {/* Alerts */}
-      {alerts.length > 0 ? (
-        <div className="space-y-2">
+      {alerts.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <span className="data-label">Alertes actives</span>
           {alerts.map((alert) => (
             <div
               key={alert.id}
@@ -76,11 +81,6 @@ export function EthicalCompass({ alerts, captureIndex }: EthicalCompassProps) {
             </div>
           ))}
         </div>
-      ) : (
-        <p className="text-xs text-safe flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-safe" />
-          Aucune concentration de pouvoir détectée
-        </p>
       )}
     </div>
   );

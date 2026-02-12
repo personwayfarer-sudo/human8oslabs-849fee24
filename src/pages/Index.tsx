@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { TransparencyWall } from "@/components/TransparencyWall";
 import { EthicalCompass } from "@/components/EthicalCompass";
-import { Apple, Zap, Banknote, Home } from "lucide-react";
+import { Apple, Zap, Banknote, Droplets } from "lucide-react";
 
 const mockEntries = [
   { id: "1", timestamp: "12 fév 15:42", type: "décision" as const, description: "Réunion plénière : vote pour mutualiser le stock alimentaire excédentaire avec le Lab voisin.", author: "Assemblée (consensus)" },
@@ -16,6 +16,12 @@ const mockEntries = [
 const mockAlerts = [
   { id: "1", indicator: "Accès Numérique", message: "Karim gère seul les accès depuis 12 jours — rotation recommandée.", severity: "warning" as const },
 ];
+
+// Simulated data
+const stockDays = [23, 5, 8, 15, 30]; // food, water, vegetables, wood, pharmacy
+const rolesPerMember: Record<string, number> = {
+  "Aïcha": 1, "Karim": 1, "Leïla": 1, "Omar": 1, "Nadia": 1, "Youssef": 1,
+};
 
 const Index = () => {
   return (
@@ -34,7 +40,9 @@ const Index = () => {
           unit="jours"
           status="safe"
           icon={<Apple className="h-4 w-4" />}
-          detail="Au-dessus du seuil de 14j"
+          detail="Au-dessus du seuil de 30j"
+          invariant="Dissociation"
+          invariantExplanation="Le stock alimentaire est géré collectivement. Son niveau ne dépend pas de la contribution individuelle d'un membre. Si un membre quitte le Lab, le stock reste. Cet indicateur protège l'accès à la nourriture comme droit structurel."
         />
         <MetricCard
           label="Autonomie Énergétique"
@@ -43,6 +51,8 @@ const Index = () => {
           status="safe"
           icon={<Zap className="h-4 w-4" />}
           detail="Solaire + batterie"
+          invariant="Subsidiarité"
+          invariantExplanation="L'énergie est produite localement (solaire, batterie). Plus ce pourcentage est élevé, moins le Lab dépend de fournisseurs extérieurs. L'objectif est l'autonomie, pas l'autarcie."
         />
         <MetricCard
           label="Fonds de Secours"
@@ -51,21 +61,32 @@ const Index = () => {
           status="warning"
           icon={<Banknote className="h-4 w-4" />}
           detail="En dessous du seuil 3k€"
+          invariant="Sortie Libre"
+          invariantExplanation="Le fonds de secours garantit qu'un membre en difficulté peut recevoir une aide d'urgence. Il n'est lié à aucune condition de performance. Son existence protège le droit de sortie : personne ne reste par nécessité financière."
         />
         <MetricCard
           label="Eau Potable"
           value={5}
           unit="jours"
           status="danger"
-          icon={<Home className="h-4 w-4" />}
+          icon={<Droplets className="h-4 w-4" />}
           detail="Réapprovisionnement urgent"
+          invariant="Minimum Vital"
+          invariantExplanation="L'eau potable est la ressource la plus critique. Descendre sous 7 jours d'autonomie déclenche une alerte. Ce seuil existe pour garantir que le Lab ne met jamais ses membres en danger vital par négligence structurelle."
         />
       </div>
 
       {/* Two columns: Compass + Wall */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-1">
-          <EthicalCompass captureIndex={18} alerts={mockAlerts} />
+          <EthicalCompass
+            alerts={mockAlerts}
+            rolesPerMember={rolesPerMember}
+            stockDays={stockDays}
+            securityThreshold={30}
+            onTimeRotations={4}
+            totalRotations={5}
+          />
         </div>
         <div className="lg:col-span-2">
           <TransparencyWall entries={mockEntries} />
