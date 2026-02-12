@@ -3,7 +3,8 @@ import { PageHeader } from "@/components/PageHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { TransparencyWall } from "@/components/TransparencyWall";
 import { EthicalCompass } from "@/components/EthicalCompass";
-import { Apple, Zap, Banknote, Droplets } from "lucide-react";
+import { Apple, Zap, Banknote, Droplets, HeartHandshake } from "lucide-react";
+import { JusticeCognitive } from "@/components/JusticeCognitive";
 
 const mockEntries = [
   { id: "1", timestamp: "12 fév 15:42", type: "décision" as const, description: "Réunion plénière : vote pour mutualiser le stock alimentaire excédentaire avec le Lab voisin.", author: "Assemblée (consensus)" },
@@ -22,6 +23,7 @@ const stockDays = [23, 5, 8, 15, 30]; // food, water, vegetables, wood, pharmacy
 const rolesPerMember: Record<string, number> = {
   "Aïcha": 1, "Karim": 1, "Leïla": 1, "Omar": 1, "Nadia": 1, "Youssef": 1,
 };
+const openTensions = 2; // simulated: t1 and t2 are open
 
 const Index = () => {
   return (
@@ -76,6 +78,30 @@ const Index = () => {
         />
       </div>
 
+      {/* Tension indicator */}
+      <div className="glass-card p-4 mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className={`w-8 h-8 rounded flex items-center justify-center ${openTensions > 3 ? "bg-destructive/10" : openTensions > 0 ? "bg-warning/10" : "bg-safe/10"}`}>
+            <HeartHandshake className={`h-4 w-4 ${openTensions > 3 ? "text-destructive" : openTensions > 0 ? "text-warning" : "text-safe"}`} />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              {openTensions} tension(s) ouverte(s)
+            </p>
+            <p className="text-[10px] text-muted-foreground">
+              {openTensions > 3 ? "Seuil dépassé — capture émotionnelle détectée" : openTensions > 0 ? "En cours de médiation" : "Aucun conflit structurel"}
+            </p>
+          </div>
+          <JusticeCognitive
+            invariant="Non-Capture Émotionnelle"
+            explanation="Les tensions non résolues sont une forme de capture : elles immobilisent le collectif et concentrent le pouvoir chez ceux qui 'tolèrent' le conflit. Cet indicateur alimente directement la Boussole de Capture."
+          />
+        </div>
+        <a href="/mediation" className="text-xs text-primary font-medium hover:underline">
+          Voir les tensions →
+        </a>
+      </div>
+
       {/* Two columns: Compass + Wall */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-1">
@@ -86,6 +112,8 @@ const Index = () => {
             securityThreshold={30}
             onTimeRotations={4}
             totalRotations={5}
+            openTensions={openTensions}
+            tensionThreshold={3}
           />
         </div>
         <div className="lg:col-span-2">

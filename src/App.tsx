@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Subsistance from "./pages/Subsistance";
 import Roles from "./pages/Roles";
+import Mediation from "./pages/Mediation";
 import Savoirs from "./pages/Savoirs";
 import Parametres from "./pages/Parametres";
 import NotFound from "./pages/NotFound";
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/subsistance" element={<Subsistance />} />
           <Route path="/roles" element={<Roles />} />
+          <Route path="/mediation" element={<Mediation />} />
           <Route path="/savoirs" element={<Savoirs />} />
           <Route path="/parametres" element={<Parametres />} />
           <Route path="*" element={<NotFound />} />
