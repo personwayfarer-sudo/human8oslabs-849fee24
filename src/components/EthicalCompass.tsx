@@ -22,6 +22,7 @@ interface EthicalCompassProps {
   tensionThreshold?: number;
   cloudDependencies?: { service: string; critical: boolean; selfHostable: boolean }[];
   auditOverdue?: boolean;
+  hasActiveResident?: boolean;
 }
 
 export function EthicalCompass({
@@ -35,6 +36,7 @@ export function EthicalCompass({
   tensionThreshold = 3,
   cloudDependencies = [],
   auditOverdue = false,
+  hasActiveResident = false,
 }: EthicalCompassProps) {
   const { score, factors } = useMemo(() =>
     calculateCaptureIndex({
@@ -47,8 +49,9 @@ export function EthicalCompass({
       tensionThreshold,
       cloudDependencies,
       auditOverdue,
+      hasActiveResident,
     }),
-    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations, openTensions, tensionThreshold, cloudDependencies, auditOverdue]
+    [rolesPerMember, stockDays, securityThreshold, onTimeRotations, totalRotations, openTensions, tensionThreshold, cloudDependencies, auditOverdue, hasActiveResident]
   );
 
   return (
