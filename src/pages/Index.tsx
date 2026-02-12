@@ -23,7 +23,13 @@ const stockDays = [23, 5, 8, 15, 30]; // food, water, vegetables, wood, pharmacy
 const rolesPerMember: Record<string, number> = {
   "Aïcha": 1, "Karim": 1, "Leïla": 1, "Omar": 1, "Nadia": 1, "Youssef": 1,
 };
-const openTensions = 2; // simulated: t1 and t2 are open
+const openTensions = 2;
+const cloudDeps = [
+  { service: "HUMAN∞OS", critical: true, selfHostable: true },
+  { service: "Serveur solaire", critical: true, selfHostable: true },
+  { service: "Email (Gmail)", critical: false, selfHostable: false },
+  { service: "Cartographie", critical: false, selfHostable: false },
+];
 
 const Index = () => {
   return (
@@ -114,6 +120,7 @@ const Index = () => {
             totalRotations={5}
             openTensions={openTensions}
             tensionThreshold={3}
+            cloudDependencies={cloudDeps}
           />
         </div>
         <div className="lg:col-span-2">
