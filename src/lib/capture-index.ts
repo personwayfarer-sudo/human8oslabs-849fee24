@@ -29,6 +29,8 @@ interface CaptureInput {
   cloudDependencies?: CloudDependency[];
   /** Whether the 18-month audit deadline has been exceeded */
   auditOverdue?: boolean;
+  /** Whether there is an active resident from another Lab */
+  hasActiveResident?: boolean;
 }
 
 export interface CaptureFactor {
@@ -110,6 +112,12 @@ export function calculateCaptureIndex(input: CaptureInput): CaptureResult {
     factors.push({ label: "Audit croisé en retard (>18 mois)", contribution: 20, status: "negative" });
   } else {
     factors.push({ label: "Audit croisé à jour", contribution: 5, status: "positive" });
+  }
+
+  // Factor 7: Resident diversity bonus (-5 points)
+  if (input.hasActiveResident) {
+    score -= 5;
+    factors.push({ label: "Résident actif — regard extérieur", contribution: 5, status: "positive" });
   }
 
   score = Math.max(0, Math.min(100, score));

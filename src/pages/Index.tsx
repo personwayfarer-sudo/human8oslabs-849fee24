@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { MetricCard } from "@/components/MetricCard";
 import { TransparencyWall } from "@/components/TransparencyWall";
 import { EthicalCompass } from "@/components/EthicalCompass";
-import { Apple, Zap, Banknote, Droplets, HeartHandshake, ClipboardCheck } from "lucide-react";
+import { Apple, Zap, Banknote, Droplets, HeartHandshake, ClipboardCheck, Stamp } from "lucide-react";
 import { JusticeCognitive } from "@/components/JusticeCognitive";
 
 const mockEntries = [
@@ -132,6 +132,30 @@ const Index = () => {
         </a>
       </div>
 
+      {/* Resident indicator */}
+      <div className="glass-card p-4 mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded flex items-center justify-center bg-safe/10">
+            <Stamp className="h-4 w-4 text-safe" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-foreground">
+              1 résident actif — Gardien_C (Lab-Gamma)
+            </p>
+            <p className="text-[10px] text-muted-foreground">
+              Regard extérieur continu · −5 pts Indice de Capture
+            </p>
+          </div>
+          <JusticeCognitive
+            invariant="Essaimage"
+            explanation="La présence d'un résident d'un autre Lab réduit le score de capture car un regard extérieur constant empêche la cristallisation des habitudes et des rapports de pouvoir implicites."
+          />
+        </div>
+        <a href="/savoirs" className="text-xs text-primary font-medium hover:underline">
+          Voir les résidents →
+        </a>
+      </div>
+
       {/* Two columns: Compass + Wall */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-1">
@@ -145,6 +169,7 @@ const Index = () => {
             openTensions={openTensions}
             tensionThreshold={3}
             cloudDependencies={cloudDeps}
+            hasActiveResident={true}
           />
         </div>
         <div className="lg:col-span-2">
